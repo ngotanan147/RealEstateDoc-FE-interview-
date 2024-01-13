@@ -1,0 +1,45 @@
+<div>
+  <p class="cursor-pointer fw-bold" (click)="backToList()">< Back to list</p>
+
+  <form [formGroup]="formGroup!" class="example-form d-flex flex-column">
+    <mat-form-field class="example-full-width">
+      <mat-label>Id</mat-label>
+      <input
+        matInput
+        placeholder="name"
+        [disabled]="true"
+        [value]="editData?.id"
+      />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" />
+      <small
+        class="error-text"
+        [innerHtml]="validateMessage(getFormControl('name'))"
+      ></small>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Description" formControlName="description" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Category</mat-label>
+      <input matInput placeholder="Category" formControlName="category" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Price</mat-label>
+      <input matInput placeholder="Price" formControlName="price" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Image</mat-label>
+      <input matInput placeholder="Image" formControlName="image" />
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Quantity</mat-label>
+      <input matInput placeholder="Quantity" formControlName="quantity" />
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" (click)="handleSubmit()">Submit</button>
+</div>

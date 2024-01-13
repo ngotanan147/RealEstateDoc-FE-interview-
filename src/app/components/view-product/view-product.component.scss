@@ -1,0 +1,10 @@
+.view-product-container {
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+:host ::ng-deep {
+  button {
+    margin-left: auto;
+  }
+}

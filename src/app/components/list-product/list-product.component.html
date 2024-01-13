@@ -1,0 +1,73 @@
+<div>
+  <div>
+    <h4>Product List</h4>
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="handleSearch($event)" />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="navigateToCreateProduct()"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="imageUrl">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let element">
+        <img [src]="element.image" width="100" height="100" class="my-3" />
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>Quantity</th>
+      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="action-icons-wrapper">
+          <mat-icon
+            matTooltip="View details"
+            (click)="navigateToProductDetails(element.id)"
+            >pageview</mat-icon
+          >
+          <mat-icon matTooltip="Edit" (click)="navigateToEdit(element.id)"
+            >edit</mat-icon
+          >
+          <mat-icon
+            matTooltip="Delete"
+            (click)="handleDeleteProduct(element.id)"
+            >delete</mat-icon
+          >
+        </div>
+      </td>
+    </ng-container>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell p-3" colspan="9999">No data matching the filter</td>
+    </tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

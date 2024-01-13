@@ -1,0 +1,10 @@
+.action-icons-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+:host ::ng-deep {
+  mat-icon {
+    cursor: pointer;
+  }
+}
