@@ -16,10 +16,10 @@ Run `npm run generate` to generate new data.
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Project requirements
-User is able to:
+My project meets all the requirements below. User is able to:
 - Create
 - Update
 - Read
 - Soft Delete
 - Sort, Filter, Search (optional)
-My project meets all requirements above.
+
