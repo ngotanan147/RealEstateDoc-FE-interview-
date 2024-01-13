@@ -5,7 +5,7 @@ import { IProduct } from 'src/models/IProduct';
 import { MockApiService } from 'src/services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { v4 as uuidv4 } from 'uuid';
-// const yourModuleName = require('uuid');
+
 @Component({
   selector: 'app-edit-product',
   templateUrl: './edit-product.component.html',
@@ -50,7 +50,6 @@ export class EditProductComponent implements OnInit {
         });
       } else {
         this.isCreateMode = true;
-        console.log(this.isCreateMode);
       }
     });
   }
@@ -71,12 +70,10 @@ export class EditProductComponent implements OnInit {
   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
-
       if (control instanceof FormControl) {
         this.validateFormControl(control);
         return;
       }
-
       if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       }
@@ -98,6 +95,7 @@ export class EditProductComponent implements OnInit {
       return;
     }
     if (!this.isCreateMode) {
+      // Edit product
       this.apiService.updateProduct(<IProduct>this.formGroup.value).subscribe({
         next: () => {
           this.snackBar.open('Edit successfully!', undefined, {
@@ -111,6 +109,7 @@ export class EditProductComponent implements OnInit {
           });
         },
       });
+      // Create product
     } else {
       this.formGroup.patchValue({
         id: uuidv4(),

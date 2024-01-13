@@ -6,4 +6,5 @@ export interface IProduct {
   price: string;
   image: string;
   quantity: number;
+  isDeleted: boolean
 }

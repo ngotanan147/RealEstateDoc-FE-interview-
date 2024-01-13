@@ -5,7 +5,7 @@
     <h3 class="text-uppercase">View details</h3>
 
     <div *ngFor="let key of getKeysOfproduct()" class="mb-3">
-      <p *ngIf="key !== 'image'">
+      <p *ngIf="key !== 'image' && key !== 'isDeleted'">
         <span class="fw-bold">{{ key | titlecase }}:</span>
         {{ getDataByKey(key) }}
       </p>
@@ -19,11 +19,14 @@
   <div class="d-flex mt-3">
     <button
       mat-raised-button
+      class="edit-button"
       color="primary"
-      class="ms-auto"
       (click)="navigateToEditProduct(productData?.id!)"
     >
       Edit
+    </button>
+    <button mat-raised-button color="primary" (click)="handleDeleteProduct()">
+      Delete
     </button>
   </div>
 </div>

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { IProduct } from 'src/models/IProduct';
 import { MockApiService } from 'src/services';
 
@@ -19,11 +18,9 @@ export class AppComponent {
     'actions',
   ];
 
-  constructor(private apiService: MockApiService, private router: Router) {
+  constructor(private apiService: MockApiService) {
     this.apiService.getProducts().subscribe((res: IProduct[]) => {
       this.dataSource = res;
     });
   }
-
-  viewProduct() {}
 }

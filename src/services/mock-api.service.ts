@@ -32,7 +32,10 @@ export class MockApiService {
       .pipe(map((data) => <IProduct>data));
   }
 
-  deleteProduct(id: string) {
-    return this.http.delete(this.apiUrl + `/${id}`);
+  // Soft delete
+  deleteProduct(deleteData: IProduct) {
+    return this.http
+      .put(this.apiUrl + `/${deleteData.id}`, deleteData)
+      .pipe(map((data) => <IProduct>data));
   }
 }

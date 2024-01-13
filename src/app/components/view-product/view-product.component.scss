@@ -4,7 +4,8 @@
 }
 
 :host ::ng-deep {
-  button {
+  .edit-button {
     margin-left: auto;
+    margin-right: 1rem;
   }
 }

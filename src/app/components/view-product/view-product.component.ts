@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProduct } from 'src/models/IProduct';
 import { MockApiService } from 'src/services';
@@ -14,7 +15,8 @@ export class ViewProductComponent {
   constructor(
     private route: ActivatedRoute,
     private apiService: MockApiService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     // Get param Id and fetch data
     this.route.params.subscribe((data: any) => {
@@ -46,6 +48,26 @@ export class ViewProductComponent {
 
   navigateToEditProduct(id: string) {
     this.router.navigate(['edit', id]);
+  }
+
+  handleDeleteProduct() {
+    if (!this.productData) {
+      return;
+    }
+    this.productData.isDeleted = true;
+    this.apiService.deleteProduct(this.productData).subscribe({
+      next: () => {
+        this.snackBar.open('Delete successfully!', undefined, {
+          duration: 3000,
+        });
+        this.router.navigate(['']);
+      },
+      error: () => {
+        this.snackBar.open('Error while deleting product!', undefined, {
+          duration: 3000,
+        });
+      },
+    });
   }
 
   backToList() {

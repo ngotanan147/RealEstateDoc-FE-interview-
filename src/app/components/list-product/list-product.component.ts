@@ -1,10 +1,12 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/models/IProduct';
 import { MockApiService } from 'src/services';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list-product',
@@ -13,14 +15,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ListProductComponent {
   @ViewChild('matTable') table!: MatTable<any>;
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
 
-  dataSource: MatTableDataSource<IProduct, MatPaginator> =
-    new MatTableDataSource();
+  dataSource!: MatTableDataSource<IProduct, MatPaginator>;
   displayedColumns: string[] = [
     'name',
     'category',
     'price',
-    'imageUrl',
+    'image',
     'quantity',
     'actions',
   ];
@@ -28,11 +30,18 @@ export class ListProductComponent {
   constructor(
     private apiService: MockApiService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private _liveAnnouncer: LiveAnnouncer
   ) {
     // Fetch products
     this.apiService.getProducts().subscribe((res: IProduct[]) => {
       this.dataSource = new MatTableDataSource(res);
+      this.dataSource.data = this.dataSource.data.filter(
+        (item: IProduct) => !item.isDeleted
+      );
+      if (this.dataSource) {
+        this.dataSource.sort = this.sort;
+      }
     });
   }
 
@@ -56,7 +65,18 @@ export class ListProductComponent {
   }
 
   handleDeleteProduct(id: string) {
-    this.apiService.deleteProduct(id).subscribe({
+    const deleteProduct = this.dataSource.data.find(
+      (item: IProduct) => item.id === id
+    );
+    if (!deleteProduct) {
+      this.snackBar.open('Product to delete not found', undefined, {
+        duration: 3000,
+      });
+      return;
+    }
+
+    deleteProduct.isDeleted = true;
+    this.apiService.deleteProduct(deleteProduct).subscribe({
       next: () => {
         this.snackBar.open('Delete successfully!', undefined, {
           duration: 3000,
@@ -71,5 +91,18 @@ export class ListProductComponent {
         });
       },
     });
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }
